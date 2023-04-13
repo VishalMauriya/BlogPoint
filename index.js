@@ -1,30 +1,21 @@
 const express = require('express')
 // const allblogs = require('data/myBlogs')
 var exphbs  = require('express-handlebars');
-// const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost:27017/myBlogs');
-
-// const Blog = mongoose.model('content', { name: String });
-
-// const blogDB = new Blog({ name: 'vishal' });
-// blogDB.save().then(() => console.log(blogDB.name));
-
-// const MyModel = mongoose.model('myBlogs', new Schema({ name: String }));
-// const doc = new MyModel();
-// const doc = await MyModel.findOne();
-// Blog.find()
-//     .then(p => console.log(p))
-//     .catch(error => console.log(error));
-
-// doc instanceof MyModel; // true
-// doc instanceof mongoose.Model; // true
-// doc instanceof mongoose.Document; // true
+require('./src/database/conn.js');
 
 const path = require('path')
 const app = express()
 const port = 3000
 
-app.engine('handlebars', exphbs.engine());
+const hbs = exphbs.create({
+  defaultLayout: 'main',
+  extname: '.handlebars',
+  runtimeOptions: {
+    allowProtoMethodsByDefault: true,
+  },
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 // app.use(express.static(path.join(__dirname, "data/myBlogs.js")))

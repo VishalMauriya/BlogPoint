@@ -1,4 +1,4 @@
-blogs = [
+blogs = [   
     {
         title : "How to Learn Java",
         content : "Java tutorial by vishal",

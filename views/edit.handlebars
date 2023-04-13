@@ -1,0 +1,115 @@
+<!-- index.handlebars -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Tab Example</title>
+    <style>
+      /* Style the tab */
+      .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+      }
+      
+      /* Style the buttons inside the tab */
+      .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+      }
+      
+      /* Change background color of buttons on hover */
+      .tab button:hover {
+        background-color: #ddd;
+      }
+      
+      /* Create an active/current tablink class */
+      .tab button.active {
+        background-color: #ccc;
+      }
+      
+      /* Style the tab content */
+      .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tab">
+      <button class="tablinks {{#if activeTab1}}active{{/if}}" data-tab="tab1">Tab 1</button>
+      <button class="tablinks {{#if activeTab2}}active{{/if}}" data-tab="tab2">Tab 2</button>
+    </div>
+
+    <div id="tab1" class="tabcontent {{#if activeTab1}}active{{/if}}">
+      {{#if tab1Content}}
+        {{{tab1Content}}}
+      {{else}}
+        <p>Default content for tab 1.</p>
+      {{/if}}
+    </div>
+
+    <div id="tab2" class="tabcontent {{#if activeTab2}}active{{/if}}">
+      {{#if tab2Content}}
+        {{{tab2Content}}}
+      {{else}}
+        <p>Default content for tab 2.</p>
+      {{/if}}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/handlebars/dist/handlebars.min.js"></script>
+    <script>
+      const tablinks = document.querySelectorAll('.tablinks');
+      tablinks.forEach(tablink => {
+        tablink.addEventListener('click', (event) => {
+          const tab = event.target.dataset.tab;
+          showTab(tab);
+        });
+      });
+
+      function showTab(tab) {
+        const tabcontents = document.querySelectorAll('.tabcontent');
+        tabcontents.forEach(tabcontent => {
+          if (tabcontent.id === tab) {
+            tabcontent.style.display = 'block';
+          } else {
+            tabcontent.style.display = 'none';
+          }
+        });
+
+        const newContent = `<p>New content for ${tab}.</p>`;
+        const context = {};
+        context[`${tab}Content`] = newContent;
+
+        const template = Handlebars.compile(document.getElementById('tab-template').innerHTML);
+        const html = template(context);
+
+        const tabContainer = document.querySelector('.tab');
+        tabContainer.insertAdjacentHTML('afterend', html);
+
+        // Remove the 'active' class from all tab buttons
+        const activeTabs = document.querySelectorAll('.tab button.active');
+        activeTabs.forEach(activeTab => {
+              // Add the 'active' class to the selected tab button
+    const selectedTab = document.querySelector(`.tab button[data-tab="${tab}"]`);
+    selectedTab.classList.add('active');
+  }
+
+  // Show the first tab by default
+  showTab('tab1');
+</script>
+
+<script id="tab-template" type="text/x-handlebars-template">
+  <div id="{{id}}" class="tabcontent">
+    {{{content}}}
+  </div>
+</script>
+
